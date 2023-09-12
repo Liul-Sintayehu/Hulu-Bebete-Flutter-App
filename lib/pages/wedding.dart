@@ -6,11 +6,15 @@ import 'package:share/share.dart';
 import 'package:flutter_rating_bar/flutter_rating_bar.dart';
 import 'package:http/http.dart';
 
+import '../User.dart';
 import '../util/designs.dart';
 import 'myData.dart';
+import '../homePage.dart';
+import 'package:geolocator/geolocator.dart';
 
 class Wedding extends StatefulWidget {
-  const Wedding({super.key});
+  final User user;
+  const Wedding({required this.user, Key? key}) : super(key: key);
 
   @override
   State<Wedding> createState() => _WeddingState();
@@ -40,7 +44,7 @@ class _WeddingState extends State<Wedding> {
       var myData = {
         "senderName": senderName.text,
         "info": info.text,
-        "teteri": "abebe",
+        "teteri": teteris[0].toString(),
         "gps": "21533"
       };
       //  List<Map<String, dynamic>> myMapList = teteris.cast<Map<String, dynamic>>().map((item) => Map<String, dynamic>.from(item)).toList();
@@ -50,18 +54,31 @@ class _WeddingState extends State<Wedding> {
       //       teteri: jsonEncode(object),
       //       gps: "21533"
       //   );
-      final url = "https://fproject1.onrender.com/create";
-      await post(Uri.parse(url), body: myData);
-      print("sending");
+      print(myData);
+     // final url = "https://fproject1.onrender.com/create";
+      //await post(Uri.parse(url), body: myData);
+
+      Position position = await Geolocator.getCurrentPosition(
+        desiredAccuracy: LocationAccuracy.high,
+      );
+      double latitude = position.latitude;
+      double longitude = position.longitude;
+      setState(() {
+        tex = latitude.toString();
+      });
+      senderName.text = latitude.toString();
     } catch (e) {
       print(e);
     }
   }
-
+  String tex = '';
   @override
   Widget build(BuildContext context) {
+    var user = widget.user;
     return SafeArea(
       child: Scaffold(
+        backgroundColor: Colors.white,
+        
         body: SingleChildScrollView(
           child: Column(
             children: [
@@ -72,16 +89,19 @@ class _WeddingState extends State<Wedding> {
                     color: Colors.white,
                     child: Image(
                       image: AssetImage('images/art.png'),
-                      fit: BoxFit.cover,
+                      //fit: BoxFit.cover,
                     ),
                   ),
                   Positioned(
                     child: Text(
-                      'Part Time Job',
-                      style: TextStyle(fontSize: 24),
+                      'Wedding',
+                      style: TextStyle(
+                          fontSize: 24,
+                          color: Colors.green,
+                          fontWeight: FontWeight.bold),
                     ),
-                    bottom: 2,
-                    left: 2,
+                    bottom: 10,
+                    //  left: 10,
                   )
                 ],
               ),
@@ -179,17 +199,17 @@ class _WeddingState extends State<Wedding> {
                   child: ListView(
                     scrollDirection: Axis.horizontal,
                     children: [
-                      Designs(color: Colors.red, path: "images/logo3.png"),
-                      Designs(color: Colors.red, path: "images/logo3.png"),
-                      Designs(color: Colors.red, path: "images/logo3.png"),
-                      Designs(color: Colors.red, path: "images/logo3.png"),
+                      Designs(color: Colors.red, path: "images/wedding/w1.jpg"),
+                      Designs(color: Colors.red, path: "images/wedding/w5.jpg"),
+                      Designs(color: Colors.red, path: "images/wedding/w4.jpg"),
+                      Designs(color: Colors.red, path: "images/wedding/w3.jpg"),
                     ],
                   ),
                 ),
               ),
               ElevatedButton(
                 style: ElevatedButton.styleFrom(
-                  minimumSize: Size(200, 30),
+                  minimumSize: Size(200, 40),
                   backgroundColor: Colors.yellow,
                 ),
                 onPressed: () {
@@ -214,7 +234,12 @@ class _WeddingState extends State<Wedding> {
             backgroundColor: Colors.grey[200],
             destinations: [
               IconButton(
-                  onPressed: () {},
+                  onPressed: () {
+                    Navigator.of(context).push(MaterialPageRoute(
+                        builder: (context) => HomePage(
+                              user: user,
+                            )));
+                  },
                   icon: SizedBox(
                       child: ImageIcon(
                           size: 25,
@@ -333,8 +358,16 @@ class _WeddingState extends State<Wedding> {
             ),
             onPressed: () {
               send();
+              //  if(widget.user.balanceu < 1000){
+              //   showSuc('insufficint balance');
+              //   print('ins');
+              //  }else{
+              //   showSuc('succsusfull');
+              //   print('suc');
+              //  }
             },
-            child: Text('Book',style:TextStyle(color: Colors.black,fontSize: 24))),
+            child: Text('Book',
+                style: TextStyle(color: Colors.black, fontSize: 24))),
       ),
     );
   }
@@ -380,4 +413,24 @@ class _WeddingState extends State<Wedding> {
       print(e);
     }
   }
+
+  void showSuc(text) => showDialog(
+        context: context,
+        builder: (context) => AlertDialog(
+          // title: Center(child: Text('Registration complete')),
+          content: Column(
+            mainAxisSize: MainAxisSize.min,
+            children: [Text(text)],
+          ),
+          actions: [
+            TextButton(
+                onPressed: () {
+                  Navigator.of(context).pop();
+                  FocusScope.of(context).unfocus();
+                  new TextEditingController().clear();
+                },
+                child: Text('Ok'))
+          ],
+        ),
+      );
 }

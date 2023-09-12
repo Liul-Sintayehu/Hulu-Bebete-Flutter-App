@@ -6,10 +6,12 @@ import 'package:share/share.dart';
 import 'package:flutter_rating_bar/flutter_rating_bar.dart';
 import 'package:http/http.dart';
 
+import '../User.dart';
 import '../homePage.dart';
 
 class MelktPage extends StatefulWidget {
-  const MelktPage({super.key});
+  final User user;
+  const MelktPage({required this.user, Key? key}) : super(key: key);
 
   @override
   State<MelktPage> createState() => _MelktPageState();
@@ -39,10 +41,10 @@ class _MelktPageState extends State<MelktPage> {
                   Positioned(
                     child: Text(
                       'Melktegnaw',
-                      style: TextStyle(fontSize: 24),
+                      style: TextStyle(fontSize: 24,color: Colors.green,fontWeight: FontWeight.bold),
                     ),
                     bottom: 2,
-                    left: 2,
+                    left: 10,
                   )
                 ],
               ),
@@ -69,10 +71,10 @@ class _MelktPageState extends State<MelktPage> {
                                 )),
                             trailing: ElevatedButton(
                                 style: ElevatedButton.styleFrom(
-                                    backgroundColor: Colors.yellow),
+                                    backgroundColor: Colors.white),
                                 onPressed: () {
                                   Navigator.of(context).push(
-                          MaterialPageRoute(builder: (context) => Wedding()));
+                          MaterialPageRoute(builder: (context) => Wedding(user: widget.user,)));
                                 },
                                 child: Text(
                                   'Wedding',
@@ -99,7 +101,7 @@ class _MelktPageState extends State<MelktPage> {
                                 )),
                             trailing: ElevatedButton(
                                 style: ElevatedButton.styleFrom(
-                                    backgroundColor: Colors.yellow),
+                                    backgroundColor: Colors.white),
                                 onPressed: () {},
                                 child: Text('Graduation',
                                     style: TextStyle(
@@ -124,7 +126,7 @@ class _MelktPageState extends State<MelktPage> {
                                 )),
                             trailing: ElevatedButton(
                               style: ElevatedButton.styleFrom(
-                                  backgroundColor: Colors.yellow),
+                                  backgroundColor: Colors.white),
                               onPressed: () {},
                               child: Text(
                                 'Birthday',
@@ -150,7 +152,7 @@ class _MelktPageState extends State<MelktPage> {
             IconButton(
                 onPressed: () {
                   Navigator.of(context).push(
-                      MaterialPageRoute(builder: (context) => HomePage()));
+                      MaterialPageRoute(builder: (context) => HomePage(user: widget.user,)));
                 },
                 icon: SizedBox(
                     child: ImageIcon(
@@ -177,12 +179,7 @@ class _MelktPageState extends State<MelktPage> {
                         AssetImage('images/star.png')))),
             IconButton(
                 onPressed: () {
-                  Navigator.pushReplacement(
-                    context,
-                    MaterialPageRoute(
-                      builder: ((context) => MelktPage()),
-                    ),
-                  );
+                   
                 },
                 icon: SizedBox(
                     child: ImageIcon(

@@ -1,3 +1,5 @@
+import 'dart:convert';
+
 import 'package:flutter/material.dart';
 import 'package:http/http.dart';
 import 'package:hulubebete/homePage.dart';
@@ -35,18 +37,29 @@ class _RegisterState extends State<Register> {
       }
       final url = 'https://fproject1.onrender.com/signup';
       print(name.text + email.text + password.text);
-      await post(Uri.parse(url), body: {
+      var data = await post(Uri.parse(url), body: {
         "name": name.text,
         "email": email.text,
         "password": password.text
       });
-
-      //User user1 = User('znaye', '123');
+      final names = await jsonDecode(data.body)["response"]["name"];
+      final emails = await jsonDecode(data.body)["response"]["email"];
+      final passwords = await jsonDecode(data.body)["response"]["password"];
+      final int balances = await jsonDecode(data.body)["response"]["balance"];
+      //User user = User(name:names,email:emails,password:passwords,balance:balances);
       // ignore: use_build_context_synchronously
+      // Navigator.pushReplacement(
+      //   context,
+      //   MaterialPageRoute(
+      //     builder: ((context) => HomePage()),
+      //   ),
+      // );
+      
+      User user1 =  User(names, emails, passwords, balances.toDouble());
       Navigator.pushReplacement(
         context,
         MaterialPageRoute(
-          builder: ((context) => HomePage()),
+          builder: ((context) => HomePage(user: user1,)),
         ),
       );
     } catch (e) {

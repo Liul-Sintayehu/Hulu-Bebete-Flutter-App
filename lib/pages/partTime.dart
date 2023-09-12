@@ -8,12 +8,14 @@ import 'package:share/share.dart';
 import 'package:flutter_rating_bar/flutter_rating_bar.dart';
 import 'package:http/http.dart';
 
+import '../User.dart';
 import '../homePage.dart';
 import '../util/partTime.dart';
 import 'melkPage.dart';
 
 class PartTime extends StatefulWidget {
-  const PartTime({super.key});
+  final User user;
+  const PartTime({required this.user, Key? key}) : super(key: key);
 
   @override
   State<PartTime> createState() => _PartTimeState();
@@ -43,10 +45,11 @@ class _PartTimeState extends State<PartTime> {
                   Positioned(
                     child: Text(
                       'Part Time Job',
-                      style: TextStyle(fontSize: 24),
+                      style: TextStyle(fontSize: 21,color:Colors.green,fontWeight: FontWeight.bold),
+                       
                     ),
                     bottom: 2,
-                    left: 2,
+                    left: 8,
                   )
                 ],
               ),
@@ -54,9 +57,13 @@ class _PartTimeState extends State<PartTime> {
             SizedBox(
               height: 50,
             ),
-            Text('Part time job availables'),
+            Align(alignment: Alignment.center, child: Padding(
+              padding: const EdgeInsets.symmetric(horizontal: 26),
+              child: Text('Part time job availables',
+               style: TextStyle(fontSize: 18,fontWeight: FontWeight.bold),),
+            )),
             SizedBox(
-              height: 50,
+              height: 30,
             ),
             Expanded(
               flex: 5,
@@ -87,7 +94,7 @@ class _PartTimeState extends State<PartTime> {
                               child: TextButton(
                                   onPressed: () {
                                     Navigator.of(context).push(
-                          MaterialPageRoute(builder: (context) => PFirstAid()));
+                          MaterialPageRoute(builder: (context) => PDelivery(user: widget.user,)));
                                   },
                                   child: Text(
                                     'APPLY NOW',
@@ -116,7 +123,7 @@ class _PartTimeState extends State<PartTime> {
                               child: TextButton(
                                   onPressed: () {
                                      Navigator.of(context).push(
-                          MaterialPageRoute(builder: (context) => PGagari()));
+                          MaterialPageRoute(builder: (context) => PGagari(user: widget.user,)));
                                   },
                                   child: Text(
                                     'APPLY NOW',
@@ -145,7 +152,7 @@ class _PartTimeState extends State<PartTime> {
                               child: TextButton(
                                   onPressed: () {
                                     Navigator.of(context).push(
-                          MaterialPageRoute(builder: (context) => PDelivery()));
+                          MaterialPageRoute(builder: (context) => PFirstAid(user: widget.user,)));
                                   },
                                   child: Text(
                                     'APPLY NOW',
@@ -240,7 +247,7 @@ class _PartTimeState extends State<PartTime> {
             IconButton(
                 onPressed: () {
                   Navigator.of(context).push(
-                      MaterialPageRoute(builder: (context) => HomePage()));
+                      MaterialPageRoute(builder: (context) => HomePage(user: widget.user,)));
                 },
                 icon: SizedBox(
                     child: ImageIcon(
@@ -267,12 +274,12 @@ class _PartTimeState extends State<PartTime> {
                         AssetImage('images/star.png')))),
             IconButton(
                 onPressed: () {
-                  Navigator.pushReplacement(
-                    context,
-                    MaterialPageRoute(
-                      builder: ((context) => MelktPage()),
-                    ),
-                  );
+                  // Navigator.pushReplacement(
+                  //   context,
+                  //   MaterialPageRoute(
+                  //     builder: ((context) => MelktPage()),
+                  //   ),
+                  // );
                 },
                 icon: SizedBox(
                     child: ImageIcon(

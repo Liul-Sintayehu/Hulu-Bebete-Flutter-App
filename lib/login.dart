@@ -27,6 +27,7 @@ class _LoginState extends State<Login> {
   void login() async {
     try {
       final url = "https://fproject1.onrender.com/login";
+      
       final data = await post(Uri.parse(url),
           body: {"email": email.text, "password": password.text});
       String uname = jsonDecode(data.body)["message"];
@@ -34,13 +35,19 @@ class _LoginState extends State<Login> {
         setState(() {
           isLoading = false;
         });
-        //User user1 = User('znaye', '123');
+      //  User user1 = User('znaye', '123');
+       final names = await jsonDecode(data.body)["user"]["name"];
+      final emails = await jsonDecode(data.body)["user"]["email"];
+      final passwords = await jsonDecode(data.body)["user"]["password"];
+      final int balances = await jsonDecode(data.body)["user"]["balance"];
+      User user1 =  User(names, emails, passwords, balances.toDouble());
         Navigator.pushReplacement(
           context,
           MaterialPageRoute(
-            builder: ((context) => HomePage()),
+            builder: ((context) => HomePage(user: user1,)),
           ),
         );
+         
       } else {
         setState(() {
           isLoading = false;

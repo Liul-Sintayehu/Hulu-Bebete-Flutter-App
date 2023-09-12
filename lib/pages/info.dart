@@ -10,15 +10,15 @@ import '../../util/textfield.dart';
 import '../User.dart';
  
 
-class Profile extends StatefulWidget {
+class Info extends StatefulWidget {
   final User user;
-  const Profile({required this.user,super.key});
+  const Info({required this.user, Key? key}) : super(key: key);
 
   @override
-  State<Profile> createState() => ProfileState();
+  State<Info> createState() => InfoState();
 }
 
-class ProfileState extends State<Profile> {
+class InfoState extends State<Info> {
    final name = TextEditingController();
   final phone = TextEditingController();
   final subcity = TextEditingController();
@@ -36,88 +36,26 @@ class ProfileState extends State<Profile> {
                 children: [
                   Container(
                     width: double.infinity,
+              
                     color: Colors.white,
                     child: Image(
                       image: AssetImage('images/art.png'),
                       fit: BoxFit.cover,
                     ),
                   ),
-                  Positioned(bottom: 40,left: 100,
-                    child: Container(
-                      
-                    height: 130,
-                    width: 150,
-                    
-                     child: Image(
-                      image: AssetImage('images/pp.png'),
-                      fit: BoxFit.cover,
-                    ),
-                  ),
-                     
-                  )
+                   
                 ],
               ),
             ),
              
-            Text('Name'),
-            Text('${widget.user.nameu}'),
-            SizedBox(height:20),
-          ElevatedButton(
-                  style:
-                      ElevatedButton.styleFrom(backgroundColor: Colors.yellow),
-                  onPressed: () {},
-                  child: Text(
-                    'Edit profile',
-                    style: TextStyle(color: Colors.black),
-                  ),
-                ),
-          Expanded(
-            child: Column(
+            Expanded(child: Column(
               children: [
-                ListTile(
-                   
-                  leading: Icon(Icons.settings),
-                  title: Padding(
-                    padding: const EdgeInsets.only(left:18.0),
-                    child: Text('Setting',style:TextStyle(fontSize: 18)),
-                  ),
-                  trailing: IconButton(onPressed: (){}, icon: Icon(Icons.arrow_forward_ios_outlined)),
-                  
-                ),
-                ListTile(
-               
-              leading: Icon(Icons.settings),
-              title: Padding(
-                padding: const EdgeInsets.only(left:18.0),
-                child: Text('User Management',style:TextStyle(fontSize: 18)),
-              ),
-              trailing: IconButton(onPressed: (){}, icon: Icon(Icons.person)),
-              
-            ),
-            ListTile(
-               
-              leading: Icon(Icons.settings),
-              title: Padding(
-                padding: const EdgeInsets.only(left:18.0),
-                child: Text('Information',style:TextStyle(fontSize: 18)),
-              ),
-              trailing: IconButton(onPressed: (){}, icon: Icon(Icons.info)),
-              
-            ),
-            ListTile(
-               
-              leading: Icon(Icons.settings),
-              title: Padding(
-                padding: const EdgeInsets.only(left:18.0),
-                child: Text('Logout',style:TextStyle(fontSize: 18)),
-              ),
-              trailing: IconButton(onPressed: (){}, icon: Icon(Icons.logout)),
-              
-            ),
-
+                Text('Version 1.0.0'),
+            Text('Hulu Bebete application'),
+            
               ],
-            ),
-          )
+            ))
+           
              
           ],
         ),
@@ -128,8 +66,8 @@ class ProfileState extends State<Profile> {
           destinations: [
             IconButton(
                 onPressed: () {
-                  // Navigator.of(context).push(
-                  //     MaterialPageRoute(builder: (context) => HomePage(user: ,)));
+                  Navigator.of(context).push(
+                      MaterialPageRoute(builder: (context) => HomePage(user: widget.user,)));
                 },
                 icon: SizedBox(
                     child: ImageIcon(

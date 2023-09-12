@@ -5,12 +5,14 @@ import 'package:share/share.dart';
 import 'package:flutter_rating_bar/flutter_rating_bar.dart';
 import 'package:http/http.dart';
 
+import '../../User.dart';
 import '../../homePage.dart';
 import '../../util/textfield.dart';
  
 
 class PDelivery extends StatefulWidget {
-  const PDelivery({super.key});
+  final User user;
+  const PDelivery({required this.user, Key? key}) : super(key: key);
 
   @override
   State<PDelivery> createState() => _PDeliveryState();
@@ -23,6 +25,44 @@ class _PDeliveryState extends State<PDelivery> {
   final paypkm = TextEditingController();
   final method = TextEditingController();
   final experiance = TextEditingController();
+  bool suc = false;
+
+  void sendData() async {
+    try {
+       
+
+       
+       
+      final url = 'https://fproject1.onrender.com/createmelktegna';
+      var data = {
+        "name": name.text,
+        "phone": phone.text,
+        "subcity": subcity.text,
+        "payment": paypkm,
+        "method":method,
+        "experiance":experiance
+      };
+       
+      var resp = await post(Uri.parse(url), body: data);
+     print(resp.body);
+     if(!resp.body.contains("name")){
+      suc = true;
+     }
+      //User user1 = User('znaye', '123');
+      // ignore: use_build_context_synchronously
+      // Navigator.pushReplacement(
+      //   context,
+      //   MaterialPageRoute(
+      //     builder: ((context) => HomePage()),
+      //   ),
+      // );
+    } catch (e) {
+      print(e);
+    }
+  }
+
+
+
   @override
   Widget build(BuildContext context) {
     return SafeArea(
@@ -53,7 +93,7 @@ class _PDeliveryState extends State<PDelivery> {
               ),
             ),
              
-            Text('First aid'),
+            Text('Delivery job'),
              SizedBox(height: 20,),
             Expanded(
               flex: 5,
@@ -69,111 +109,114 @@ class _PDeliveryState extends State<PDelivery> {
                 child: Padding(
                   padding: const EdgeInsets.all(8.0),
                   child: SingleChildScrollView(
-                    child: Column(
-                       
-                      children: [
-                        Padding(
-                          padding: const EdgeInsets.symmetric(
-                              horizontal: 24, vertical: 8),
-                          child: SizedBox(
-                            height: 40,
-                            child: TextField(
-                              controller: name,
-                              decoration: InputDecoration(
-                                  contentPadding:
-                                      EdgeInsets.fromLTRB(50, 0, 0, 0),
-                                  fillColor: Colors.grey[300],
-                                  filled: true,
-                                  border: OutlineInputBorder(
-                                      borderSide: BorderSide.none,
-                                      borderRadius: BorderRadius.circular(50)),
-                                  label: const Text(
-                                    'Enter your name',
-                                    style: TextStyle(
-                                        fontSize: 14,
-                                        fontWeight: FontWeight.bold),
-                                  )),
-                            ),
-                          ),
-                        ),
-                        Padding(
-                          padding: const EdgeInsets.symmetric(
-                              horizontal: 24, vertical: 8),
-                          child: SizedBox(
-                            height: 40,
-                            child: TextField(
-                              controller: phone,
-                              decoration: InputDecoration(
-                                  contentPadding:
-                                      EdgeInsets.fromLTRB(50, 0, 0, 0),
-                                  fillColor: Colors.grey[300],
-                                  filled: true,
-                                  border: OutlineInputBorder(
-                                      borderSide: BorderSide.none,
-                                      borderRadius: BorderRadius.circular(50)),
-                                  label: const Text(
-                                    'Enter your phone number',
-                                    style: TextStyle(
-                                        fontSize: 14,
-                                        fontWeight: FontWeight.bold),
-                                  )),
-                            ),
-                          ),
-                        ),
-                        
-                        Padding(
-                          padding: const EdgeInsets.symmetric(
-                              horizontal: 24, vertical: 8),
-                          child: SizedBox(
-                            height: 40,
-                            child: TextField(
-                              controller: subcity,
-                              decoration: InputDecoration(
-                                  contentPadding:
-                                      EdgeInsets.fromLTRB(50, 0, 0, 0),
-                                  fillColor: Colors.grey[300],
-                                  filled: true,
-                                  border: OutlineInputBorder(
-                                      borderSide: BorderSide.none,
-                                      borderRadius: BorderRadius.circular(50)),
-                                  label: const Text(
-                                    'Enter subcity',
-                                    style: TextStyle(
-                                        fontSize: 14,
-                                        fontWeight: FontWeight.bold),
-                                  )),
-                            ),
-                          ),
-                        ),
-                        MyTextField(label: 'Enter payment/kilometer',txtcont:paypkm ),
-                        MyTextField(label: 'Enter method',txtcont:method ),
-                        MyTextField(label: 'Enter experiance',txtcont:experiance ),
-                        SizedBox(height: 60),
-                        Padding(
-                          padding: const EdgeInsets.symmetric(
-                              horizontal: 24, vertical: 8),
-                          child: ElevatedButton(
-                            onPressed: () {
-                             // sendData();
-                              //print('sending');
-                            },
-                            style: ElevatedButton.styleFrom(
-                                padding: const EdgeInsets.symmetric(
-                                  vertical: 5,
-                                ),
-                                backgroundColor: Colors.yellow[500],
-                                shape: BeveledRectangleBorder(),
-                                minimumSize: Size(
-                                    MediaQuery.of(context).size.width * 0.9, 50)),
-                            child: const Text(
-                              'APPLY',
-                              style: TextStyle(fontSize: 20, color: Colors.black),
-                            ),
-                          ),
-                        ),
-                        
+                    child: SingleChildScrollView(
+                      child: Column(
                          
-                      ],
+                        children: [
+                          Padding(
+                            padding: const EdgeInsets.symmetric(
+                                horizontal: 24, vertical: 8),
+                            child: SizedBox(
+                              height: 40,
+                              child: TextField(
+                                controller: name,
+                                decoration: InputDecoration(
+                                    contentPadding:
+                                        EdgeInsets.fromLTRB(50, 0, 0, 0),
+                                    fillColor: Colors.grey[300],
+                                    filled: true,
+                                    border: OutlineInputBorder(
+                                        borderSide: BorderSide.none,
+                                        borderRadius: BorderRadius.circular(50)),
+                                    label: const Text(
+                                      'Enter your name',
+                                      style: TextStyle(
+                                          fontSize: 14,
+                                          fontWeight: FontWeight.bold),
+                                    )),
+                              ),
+                            ),
+                          ),
+                          Padding(
+                            padding: const EdgeInsets.symmetric(
+                                horizontal: 24, vertical: 8),
+                            child: SizedBox(
+                              height: 40,
+                              child: TextField(
+                                controller: phone,
+                                decoration: InputDecoration(
+                                    contentPadding:
+                                        EdgeInsets.fromLTRB(50, 0, 0, 0),
+                                    fillColor: Colors.grey[300],
+                                    filled: true,
+                                    border: OutlineInputBorder(
+                                        borderSide: BorderSide.none,
+                                        borderRadius: BorderRadius.circular(50)),
+                                    label: const Text(
+                                      'Enter your phone number',
+                                      style: TextStyle(
+                                          fontSize: 14,
+                                          fontWeight: FontWeight.bold),
+                                    )),
+                              ),
+                            ),
+                          ),
+                          
+                          Padding(
+                            padding: const EdgeInsets.symmetric(
+                                horizontal: 24, vertical: 8),
+                            child: SizedBox(
+                              height: 40,
+                              child: TextField(
+                                controller: subcity,
+                                decoration: InputDecoration(
+                                    contentPadding:
+                                        EdgeInsets.fromLTRB(50, 0, 0, 0),
+                                    fillColor: Colors.grey[300],
+                                    filled: true,
+                                    border: OutlineInputBorder(
+                                        borderSide: BorderSide.none,
+                                        borderRadius: BorderRadius.circular(50)),
+                                    label: const Text(
+                                      'Enter subcity',
+                                      style: TextStyle(
+                                          fontSize: 14,
+                                          fontWeight: FontWeight.bold),
+                                    )),
+                              ),
+                            ),
+                          ),
+                          MyTextField(label: 'Enter payment/kilometer',txtcont:paypkm ),
+                          MyTextField(label: 'Enter method',txtcont:method ),
+                          MyTextField(label: 'Enter experiance',txtcont:experiance ),
+                          SizedBox(height: 60),
+                          Padding(
+                            padding: const EdgeInsets.symmetric(
+                                horizontal: 24, vertical: 8),
+                            child: ElevatedButton(
+                              onPressed: () {
+                               sendData();
+                               showSuc();
+                                print('sending');
+                              },
+                              style: ElevatedButton.styleFrom(
+                                  padding: const EdgeInsets.symmetric(
+                                    vertical: 5,
+                                  ),
+                                  backgroundColor: Colors.yellow[500],
+                                  shape: BeveledRectangleBorder(),
+                                  minimumSize: Size(
+                                      MediaQuery.of(context).size.width * 0.9, 50)),
+                              child: const Text(
+                                'APPLY',
+                                style: TextStyle(fontSize: 20, color: Colors.black),
+                              ),
+                            ),
+                          ),
+                          
+                           
+                        ],
+                      ),
                     ),
                   ),
                 ),
@@ -190,7 +233,7 @@ class _PDeliveryState extends State<PDelivery> {
             IconButton(
                 onPressed: () {
                   Navigator.of(context).push(
-                      MaterialPageRoute(builder: (context) => HomePage()));
+                      MaterialPageRoute(builder: (context) => HomePage(user: widget.user,)));
                 },
                 icon: SizedBox(
                     child: ImageIcon(
@@ -238,7 +281,31 @@ class _PDeliveryState extends State<PDelivery> {
       ),
     );
   }
-
+//show success
+ void showSuc() => showDialog(
+        context: context,
+        builder: (context) => AlertDialog(
+          title: Center(child: Text('Registration complete')),
+          content: Column(
+            mainAxisSize: MainAxisSize.min,
+            children: [
+               Text('successfull!!')
+            ],
+          ),
+          actions: [
+            TextButton(
+                onPressed: () {
+                  
+                  Navigator.of(context).pop();
+                  FocusScope.of(context).unfocus();
+                  new TextEditingController().clear();
+                  
+                  
+                },
+                child: Text('Ok'))
+          ],
+        ),
+      );
    
    
 }

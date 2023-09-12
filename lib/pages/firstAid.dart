@@ -1,15 +1,24 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/material.dart';
+import 'package:hulubebete/pages/firstaid/chemical.dart';
+import 'package:hulubebete/pages/firstaid/electric.dart';
+import 'package:hulubebete/pages/firstaid/heart.dart';
+import 'package:hulubebete/pages/professionals/professional.dart';
 import 'package:path_provider/path_provider.dart';
 import 'package:share/share.dart';
 import 'package:flutter_rating_bar/flutter_rating_bar.dart';
 import 'package:http/http.dart';
+import '../User.dart';
+import '../util/first_aid.dart';
 
 import '../homePage.dart';
+import 'firstaid/bleeding.dart';
+import 'firstaid/drowning.dart';
 import 'melkPage.dart';
 
 class FirstAid extends StatefulWidget {
-  const FirstAid({super.key});
+  final User user;
+  const FirstAid({required this.user, Key? key}) : super(key: key);
 
   @override
   State<FirstAid> createState() => _FirstAidState();
@@ -23,6 +32,7 @@ class _FirstAidState extends State<FirstAid> {
     return SafeArea(
       child: Scaffold(
         backgroundColor: Colors.white,
+        
         body: Column(
           children: [
             Expanded(
@@ -48,13 +58,16 @@ class _FirstAidState extends State<FirstAid> {
               ),
             ),
             Padding(
-              padding: const EdgeInsets.all(8.0),
+              padding: const EdgeInsets.symmetric(horizontal:20.0),
               child: Align(
                 alignment: Alignment.centerRight,
                 child: ElevatedButton(
                   style:
-                      ElevatedButton.styleFrom(backgroundColor: Colors.yellow),
-                  onPressed: () {},
+                      ElevatedButton.styleFrom(backgroundColor: Colors.green[200]),
+                  onPressed: () {
+                     Navigator.of(context).push(
+                          MaterialPageRoute(builder: (context) => Professionals()));
+                  },
                   child: Text(
                     'Get professionals',
                     style: TextStyle(color: Colors.black),
@@ -69,84 +82,27 @@ class _FirstAidState extends State<FirstAid> {
                   child: Column(
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: [
-                      SizedBox(
-                        height: 170,
-                        child: Padding(
-                          padding: const EdgeInsets.symmetric(
-                              horizontal: 32, vertical: 5),
-                          child: Card(
-                            color: const Color.fromARGB(255, 240, 237, 237),
-                            elevation: 10,
-                            margin: EdgeInsets.all(8),
-                            child: Center(
-                              child: ListTile(
-                                leading: Image.asset(
-                                  'images/melkt/wedding.png',
-                                ),
-                                trailing: TextButton(
-                                    onPressed: () {},
-                                    child: Text(
-                                      'Accidential bleedig',
-                                      style: TextStyle(
-                                          fontSize: 18, color: Colors.black),
-                                    )),
-                              ),
-                            ),
-                          ),
-                        ),
-                      ),
-                      SizedBox(
-                        height: 200,
-                        child: Padding(
-                          padding: const EdgeInsets.symmetric(
-                              horizontal: 32, vertical: 5),
-                          child: Card(
-                            color: const Color.fromARGB(255, 240, 237, 237),
-                            elevation: 10,
-                            margin: EdgeInsets.all(8),
-                            child: Center(
-                              child: ListTile(
-                                leading: Image.asset(
-                                  'images/melkt/wedding.png',
-                                ),
-                                trailing: TextButton(
-                                    onPressed: () {},
-                                    child: Text(
-                                      'Accidential bleedig',
-                                      style: TextStyle(
-                                          fontSize: 18, color: Colors.black),
-                                    )),
-                              ),
-                            ),
-                          ),
-                        ),
-                      ),
-                      SizedBox(
-                        height: 200,
-                        child: Padding(
-                          padding: const EdgeInsets.symmetric(
-                              horizontal: 32, vertical: 5),
-                          child: Card(
-                            color: const Color.fromARGB(255, 240, 237, 237),
-                            elevation: 10,
-                            margin: EdgeInsets.all(8),
-                            child: Center(
-                              child: ListTile(
-                                leading: Image.asset(
-                                  'images/melkt/wedding.png',
-                                ),
-                                trailing: TextButton(
-                                    onPressed: () {},
-                                    child: Text(
-                                      'Accidential bleedig',
-                                      style: TextStyle(
-                                          fontSize: 18, color: Colors.black),
-                                    )),
-                              ),
-                            ),
-                          ),
-                        ),
-                      ),
+                       
+                     GestureDetector(onTap: (){
+                      Navigator.of(context).push(
+                          MaterialPageRoute(builder: (context) => Bleeding()));
+                     }, child: FirstUtil(name: 'Bleeding',color: Colors.red,path:'images/firstaid/b1.jpg',)),
+                     GestureDetector(onTap: (){
+                      Navigator.of(context).push(
+                          MaterialPageRoute(builder: (context) => Chemical()));
+                     }, child: FirstUtil(name: 'Chemical burns',color: Colors.red,path:'images/firstaid/c1.png',)),
+                     GestureDetector(onTap: (){
+                      Navigator.of(context).push(
+                          MaterialPageRoute(builder: (context) => Drowning()));
+                     }, child: FirstUtil(name: 'Drowning',color: Colors.red,path:'images/firstaid/dr1.png',)),
+                     GestureDetector(onTap: (){
+                      Navigator.of(context).push(
+                          MaterialPageRoute(builder: (context) => Electric()));
+                     },  child: FirstUtil(name: 'Electric shock',color: Colors.red,path:'images/firstaid/es1.jpg',)),
+                     GestureDetector(onTap: (){
+                      Navigator.of(context).push(
+                          MaterialPageRoute(builder: (context) => Heart()));
+                     },child: FirstUtil(name: 'Heart attack',color: Colors.red,path:'images/firstaid/ha1.jpg',))
                     ],
                   ),
                 ),
@@ -162,7 +118,7 @@ class _FirstAidState extends State<FirstAid> {
             IconButton(
                 onPressed: () {
                   Navigator.of(context).push(
-                      MaterialPageRoute(builder: (context) => HomePage()));
+                      MaterialPageRoute(builder: (context) => HomePage(user: widget.user,)));
                 },
                 icon: SizedBox(
                     child: ImageIcon(
@@ -189,12 +145,7 @@ class _FirstAidState extends State<FirstAid> {
                         AssetImage('images/star.png')))),
             IconButton(
                 onPressed: () {
-                  Navigator.pushReplacement(
-                    context,
-                    MaterialPageRoute(
-                      builder: ((context) => MelktPage()),
-                    ),
-                  );
+                   
                 },
                 icon: SizedBox(
                     child: ImageIcon(
