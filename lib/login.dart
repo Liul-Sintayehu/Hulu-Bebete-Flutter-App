@@ -36,10 +36,11 @@ class _LoginState extends State<Login> {
           isLoading = false;
         });
       //  User user1 = User('znaye', '123');
-       final names = await jsonDecode(data.body)["user"]["name"];
-      final emails = await jsonDecode(data.body)["user"]["email"];
-      final passwords = await jsonDecode(data.body)["user"]["password"];
-      final int balances = await jsonDecode(data.body)["user"]["balance"];
+      print(jsonDecode(data.body)["user"]["balance"]);
+       final names =  jsonDecode(data.body)["user"]["name"];
+      final emails =  jsonDecode(data.body)["user"]["email"];
+      final passwords =  jsonDecode(data.body)["user"]["password"];
+      final int balances =  jsonDecode(data.body)["user"]["balance"] ?? 0;
       User user1 =  User(names, emails, passwords, balances.toDouble());
         Navigator.pushReplacement(
           context,

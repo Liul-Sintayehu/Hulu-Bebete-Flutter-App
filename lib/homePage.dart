@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:hulubebete/login.dart';
 import 'package:hulubebete/onboarding.dart';
 import 'package:hulubebete/pages/firstAid.dart';
+import 'package:hulubebete/pages/gagariPage.dart';
 import 'package:hulubebete/pages/info.dart';
 import 'package:hulubebete/pages/melkPage.dart';
 import 'package:hulubebete/pages/partTime.dart';
@@ -289,10 +290,18 @@ class _HomePageState extends State<HomePage> {
                         name: 'መልእክተኛው',
                         color: const Color.fromARGB(255, 2, 1, 1),
                         path: 'images/melkt.jpg')),
-                MyButton(
-                    name: 'ጋጋሪ',
-                    color: Colors.grey[200],
-                    path: 'images/enjera.png')
+                GestureDetector(
+                  onTap:  (){
+                    Navigator.of(context).push(MaterialPageRoute(
+                          builder: (context) => Gagari(
+                                user: widget.user,
+                              )));
+                  },
+                  child: MyButton(
+                      name: 'ጋጋሪ',
+                      color: Colors.grey[200],
+                      path: 'images/enjera.png'),
+                )
               ],
             ),
             SizedBox(
