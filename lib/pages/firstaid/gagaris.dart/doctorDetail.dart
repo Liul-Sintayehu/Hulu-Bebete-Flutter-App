@@ -1,5 +1,3 @@
-import 'dart:convert';
-
 import 'package:flutter/material.dart';
 import 'package:flutter/material.dart';
 import 'package:hulubebete/pages/wedding.dart';
@@ -10,71 +8,20 @@ import 'package:http/http.dart';
 
 import '../../../User.dart';
 import '../../../homePage.dart';
+import '../../../util/doctorutil.dart';
 import '../../../util/gagari.dart';
 
-class GagariDetail extends StatefulWidget {
-  final GagariUtil gagari;
-  final User user;
-  const GagariDetail({required this.gagari, required this.user, Key? key})
-      : super(key: key);
+class DoctorDetail extends StatefulWidget {
+  final DoctorUtil doctor;
+  const DoctorDetail({required this.doctor, Key? key}) : super(key: key);
 
   @override
-  State<GagariDetail> createState() => _GagariDetailState();
+  State<DoctorDetail> createState() => _DoctorDetailState();
 }
 
-class _GagariDetailState extends State<GagariDetail> {
+class _DoctorDetailState extends State<DoctorDetail> {
   String enter = "yes";
   double rating = 0;
-
-  void sendData() async {
-    try {
-      final url = 'https://fproject1.onrender.com/payment';
-
-
-      final data = await post(Uri.parse(url), body: {
-        "email": widget.user.emailu,
-        "name": widget.user.nameu,
-        "amount": jsonEncode(300)
-      });
-      // final data2 = await post(Uri.parse(url2), body: {
-      //   "email": widget.user.emailu,
-      //   "amount": jsonEncode(widget.user.balanceu - 200)
-      // });
-
-    } catch (e) {
-      print(e);
-    }
-  }
-    void update() async {
-    try {
-      
-      final url2 = "https://fproject1.onrender.com/updatebalance";
-      final data2 = await post(Uri.parse(url2), body: {
-        "email": widget.user.emailu,
-        "amount": jsonEncode(200)
-      });
-  print(data2.body);
-    } catch (e) {
-      print(e);
-    }
-  }
-   void rateGagari() async {
-    try {
-      final url = 'https://fproject1.onrender.com/rategagari';
-      
-
-      final data = await post(Uri.parse(url), body: {
-        "name": widget.gagari.name,
-        "rate": jsonEncode(rating)
-      });
-
-      print(data.body);
-     
-    } catch (e) {
-      print(e);
-    }
-  }
-
   @override
   Widget build(BuildContext context) {
     return SafeArea(
@@ -95,7 +42,7 @@ class _GagariDetailState extends State<GagariDetail> {
                   ),
                   Positioned(
                     child: Text(
-                      'Gagari Details',
+                      'Doctors Details',
                       style: TextStyle(
                           fontSize: 24,
                           color: Colors.green,
@@ -107,89 +54,83 @@ class _GagariDetailState extends State<GagariDetail> {
                 ],
               ),
             ),
-            //
             Expanded(
               flex: 5,
               child: Center(
                 child: Column(
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
-                    Text('${widget.user.balanceu}'),
                     Image(
-                      image: AssetImage('images/parttime/gagari.jpg'),
+                      image: AssetImage('images/professionals/d2.png'),
                       fit: BoxFit.fill,
                     ),
-                    Text('${widget.gagari.name}'),
+                    Text('${widget.doctor.name}'),
                     Center(
                       child: Row(
                         mainAxisAlignment: MainAxisAlignment.center,
                         children: [
                           RatingBar.builder(
-                              unratedColor: Colors.grey[400],
-                              glow: false,
-                              allowHalfRating: true,
-                              itemBuilder: (context, _) => ImageIcon(
-                                  color: Colors.amber,
-                                  AssetImage('images/star.png')),
-                              onRatingUpdate: (rate) => setState(() {
-                                    this.rating = rate;
-                                  })),
-                          Padding(
-                            padding: const EdgeInsets.symmetric(
-                                horizontal: 24, vertical: 8),
-                            child: ElevatedButton(
-                              onPressed: ()  {
-                               rateGagari();
-                               showSuc('gagari rated');
-                                
-                              },
-                              style: ElevatedButton.styleFrom(
-                                  padding: const EdgeInsets.symmetric(
-                                    vertical: 2,
-                                  ),
-                                  backgroundColor: Colors.green[200],
-                                  shape: BeveledRectangleBorder(),
-                                  minimumSize: Size(
-                                      MediaQuery.of(context).size.width * 0.17,
-                                      30)),
-                              child: const Text(
-                                'rate',
-                                style: TextStyle(
-                                    fontSize: 15, color: Colors.black),
-                              ),
+                                      unratedColor: Colors.grey[400],
+                                      glow: false,
+                                      allowHalfRating: true,
+                                      itemBuilder: (context, _) => ImageIcon(
+                        color: Colors.amber, AssetImage('images/star.png')),
+                                      onRatingUpdate: (rate) => setState(() {
+                          this.rating = rate;
+                        })),
+                        Padding(
+                          padding: const EdgeInsets.symmetric(
+                              horizontal: 24, vertical: 8),
+                          child: ElevatedButton(
+                            onPressed: () {
+                             // sendData();
+                              //print('sending');
+                            },
+                            style: ElevatedButton.styleFrom(
+                                padding: const EdgeInsets.symmetric(
+                                  vertical: 2,
+                                ),
+                                backgroundColor: Colors.green[200],
+                                shape: BeveledRectangleBorder(),
+                                minimumSize: Size(
+                                    MediaQuery.of(context).size.width * 0.17, 30)),
+                            child: const Text(
+                              'rate',
+                              style: TextStyle(fontSize: 15, color: Colors.black),
                             ),
                           ),
+                        ),
                         ],
                       ),
                     ),
-                    Text('${widget.gagari.rate}'),
+                      Text('${widget.doctor.rate}'),
                   ],
                 ),
               ),
             ),
             Padding(
-              padding: const EdgeInsets.symmetric(horizontal: 24, vertical: 8),
-              child: ElevatedButton(
-                onPressed: () {
-                  sendData();
-                  showSuc("Request sent");
-                  update();
-                  //print('sending');
-                },
-                style: ElevatedButton.styleFrom(
-                    padding: const EdgeInsets.symmetric(
-                      vertical: 5,
-                    ),
-                    backgroundColor: Colors.yellow[500],
-                    shape: BeveledRectangleBorder(),
-                    minimumSize:
-                        Size(MediaQuery.of(context).size.width * 0.9, 50)),
-                child: const Text(
-                  'Send Request',
-                  style: TextStyle(fontSize: 20, color: Colors.black),
-                ),
-              ),
-            ),
+                        padding: const EdgeInsets.symmetric(
+                            horizontal: 24, vertical: 8),
+                        child: ElevatedButton(
+                          onPressed: () {
+                           // sendData();
+                            //print('sending');
+                          },
+                          style: ElevatedButton.styleFrom(
+                              padding: const EdgeInsets.symmetric(
+                                vertical: 5,
+                              ),
+                              backgroundColor: Colors.yellow[500],
+                              shape: BeveledRectangleBorder(),
+                              minimumSize: Size(
+                                  MediaQuery.of(context).size.width * 0.9, 50)),
+                          child: const Text(
+                            'Send Request',
+                            style: TextStyle(fontSize: 20, color: Colors.black),
+                          ),
+                        ),
+                      ),
+            
           ],
         ),
         bottomNavigationBar: NavigationBar(
@@ -289,24 +230,4 @@ class _GagariDetailState extends State<GagariDetail> {
       print(e);
     }
   }
-
-  void showSuc(text) => showDialog(
-        context: context,
-        builder: (context) => AlertDialog(
-          title: Center(child: Text(text)),
-          content: Column(
-            mainAxisSize: MainAxisSize.min,
-            children: [Text('successfull!!')],
-          ),
-          actions: [
-            TextButton(
-                onPressed: () {
-                  Navigator.of(context).pop();
-                  FocusScope.of(context).unfocus();
-                  new TextEditingController().clear();
-                },
-                child: Text('Ok'))
-          ],
-        ),
-      );
 }

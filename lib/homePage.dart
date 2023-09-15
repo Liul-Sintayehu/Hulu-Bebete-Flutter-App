@@ -1,6 +1,9 @@
+import 'dart:convert';
+
 import 'package:flutter/material.dart';
 import 'package:hulubebete/login.dart';
 import 'package:hulubebete/onboarding.dart';
+import 'package:hulubebete/pages/feedback.dart';
 import 'package:hulubebete/pages/firstAid.dart';
 import 'package:hulubebete/pages/gagariPage.dart';
 import 'package:hulubebete/pages/info.dart';
@@ -48,6 +51,7 @@ class _HomePageState extends State<HomePage> {
     setState(() {
       notif = 3; // Update the variable here
     });
+     
   }
 
   @override
@@ -167,7 +171,10 @@ class _HomePageState extends State<HomePage> {
                     // Perform action for button1
                     _refreshPage();
                   } else if (value == 'button2') {
-                    // Perform action for button2
+                    Navigator.of(context).push(MaterialPageRoute(
+                    builder: (context) => Feedbacks(
+                          user: widget.user,
+                        )));
                   } else if (value == 'button3') {
                     // Perform action for button3
                     final prefs = await SharedPreferences.getInstance();
@@ -183,7 +190,7 @@ class _HomePageState extends State<HomePage> {
                   ),
                   PopupMenuItem(
                     value: 'button2',
-                    child: Text('Button 2'),
+                    child: Text('feedback'),
                   ),
                   PopupMenuItem(
                     value: 'button3',

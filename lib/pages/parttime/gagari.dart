@@ -1,3 +1,5 @@
+import 'dart:convert';
+
 import 'package:flutter/material.dart';
 import 'package:flutter/material.dart';
 import 'package:path_provider/path_provider.dart';
@@ -34,8 +36,10 @@ class _PGagariState extends State<PGagari> {
       final url = 'https://fproject1.onrender.com/creategagari';
       var data = {
         "name": name.text,
-        "phone": phone.text,
-        "subcity": subcity.text,
+        "phone": jsonEncode(double.parse(phone.text)),
+        "subcity" : subcity.text,
+        "payment" : paypm.text,
+        "experiance": jsonEncode(double.parse(experiance.text))
       };
        
       var resp = await post(Uri.parse(url), body: data);

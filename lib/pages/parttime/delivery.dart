@@ -1,3 +1,5 @@
+import 'dart:convert';
+
 import 'package:flutter/material.dart';
 import 'package:flutter/material.dart';
 import 'package:path_provider/path_provider.dart';
@@ -29,33 +31,17 @@ class _PDeliveryState extends State<PDelivery> {
 
   void sendData() async {
     try {
-       
-
-       
-       
       final url = 'https://fproject1.onrender.com/createmelktegna';
       var data = {
         "name": name.text,
-        "phone": phone.text,
-        "subcity": subcity.text,
-        "payment": paypkm,
-        "method":method,
-        "experiance":experiance
-      };
-       
-      var resp = await post(Uri.parse(url), body: data);
+        "phone": double.parse(phone.text),
+        "subcity" : subcity.text,
+        "payment" : paypkm.text,
+        "method" : method.text,
+        "experiance": experiance.text
+      }; 
+      var resp = await post(Uri.parse(url), body: jsonEncode(data));
      print(resp.body);
-     if(!resp.body.contains("name")){
-      suc = true;
-     }
-      //User user1 = User('znaye', '123');
-      // ignore: use_build_context_synchronously
-      // Navigator.pushReplacement(
-      //   context,
-      //   MaterialPageRoute(
-      //     builder: ((context) => HomePage()),
-      //   ),
-      // );
     } catch (e) {
       print(e);
     }
@@ -197,7 +183,7 @@ class _PDeliveryState extends State<PDelivery> {
                               onPressed: () {
                                sendData();
                                showSuc();
-                                print('sending');
+                                //print('sending');
                               },
                               style: ElevatedButton.styleFrom(
                                   padding: const EdgeInsets.symmetric(

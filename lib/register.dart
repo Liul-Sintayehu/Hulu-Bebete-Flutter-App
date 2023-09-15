@@ -37,7 +37,11 @@ class _RegisterState extends State<Register> {
       }
       final url = 'https://fproject1.onrender.com/signup';
       print(name.text + email.text + password.text);
-      var data = await post(Uri.parse(url), body: {
+      if(name.text.isEmpty || email.text.isEmpty || password.text.isEmpty){
+        showEmptyTextFieldAlert(context);
+        isLoading = false;
+      }else{
+        var data = await post(Uri.parse(url), body: {
         "name": name.text,
         "email": email.text,
         "password": password.text
@@ -62,21 +66,14 @@ class _RegisterState extends State<Register> {
           builder: ((context) => HomePage(user: user1,)),
         ),
       );
+      }
+      
     } catch (e) {
       print(e);
     }
   }
 
-  // void login() async {
-  //   try {
-  //     final url = "https://fproject1back.onrender.com/login";
-  //     final data = await post(Uri.parse(url),
-  //         body: {"email": 'znaye', "password": 'aljz'});
-  //     print(data.body);
-  //   } catch (e) {
-  //     print(e);
-  //   }
-  // }
+
 
   String fut = '';
 
@@ -293,4 +290,25 @@ class _RegisterState extends State<Register> {
       ),
     );
   }
+ void showEmptyTextFieldAlert(BuildContext context) {
+  showDialog(
+    context: context,
+    builder: (BuildContext context) {
+      return AlertDialog(
+        title: Text('Empty fields'),
+        content: Text('some fields are empty!!!.'),
+        actions: [
+          TextButton(
+            onPressed: () {
+              Navigator.of(context).pop(); // Close the dialog
+            },
+            child: Text('OK'),
+          ),
+        ],
+      );
+    },
+  );
+}
+
+
 }

@@ -14,6 +14,7 @@ import 'package:http/http.dart';
 
 import '../User.dart';
 import '../homePage.dart';
+import '../util/gagariutil.dart';
 import '../util/partTime.dart';
 import 'melkPage.dart';
 
@@ -41,15 +42,25 @@ class _GagariState extends State<Gagari> {
       final url = "https://fproject1.onrender.com/getgagaris";
 
       final data = await get(Uri.parse(url));
-      
+
       setState(() {
         gagaris = jsonDecode(data.body);
       });
-      print(gagaris);
+      //List<GagariUtil> x = gagaris.map((g) => gu.add(GagariUtil(g.name, g.rate))).toList();
+
+      gagariUtilList = gagaris.map((jsonObject) {
+        String name = jsonObject['name'];
+        double rate = jsonObject['rate'].toDouble();
+        return GagariUtil(name, rate);
+      }).toList();
+      print(gagariUtilList);
     } catch (e) {
       print(e);
     }
   }
+
+  List<GagariUtil> gagariUtilList = [];
+  GagariUtil g = new GagariUtil("name", 20.0);
 
   @override
   Widget build(BuildContext context) {
@@ -85,6 +96,7 @@ class _GagariState extends State<Gagari> {
             ),
             SizedBox(
               height: 50,
+              child: Text('${widget.user.balanceu}'),
             ),
             Align(
                 alignment: Alignment.center,
@@ -101,220 +113,23 @@ class _GagariState extends State<Gagari> {
             Expanded(
               flex: 5,
               child: Center(
-                child: GridView(
-                  shrinkWrap: true,
+                child: GridView.builder(
+                itemCount: gagariUtilList.length,
+                itemBuilder: (context,index){
+                  return gagariUtilList.isEmpty
+                        ? Text("")
+                        : GagariE(gagaris: gagariUtilList[index],
+                          user: widget.user,
+                        );
+                },
                   // physics: NeverScrollableScrollPhysics(),
                   gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
                       crossAxisCount: 2),
-                  children: [
-                    Container(
-                      padding: EdgeInsets.only(bottom: 10),
-                      child: Column(
-                        mainAxisAlignment: MainAxisAlignment.spaceAround,
-                        children: [
-                          Stack(
-                            children: [
-                              GestureDetector(
-                                onTap: () {
-                                  var name =  gagaris.length>0?'${gagaris[0]["name"]}' : "";
-                                  var rate = (gagaris.length>0?'${gagaris[0]["rate"]}' : "");
-                                  var gagarix = GagariUtil(name, double.parse(rate));
-                                  print(gagarix);
-                                  Navigator.of(context)
-                                        .push(MaterialPageRoute(
-                                            builder: (context) => GagariDetail(
-                                                  gagari: gagarix,
-                                                )));
-                                },
-                                child: Container(
-                                  padding: EdgeInsets.all(10),
-                                  width: MediaQuery.of(context).size.width * 0.4,
-                                  height: MediaQuery.of(context).size.height * 0.15,
-                                  //color: Color.fromARGB(255, 243, 240, 240),
-                                  child: Image(
-                                    image: AssetImage('images/parttime/gagari.jpg'),
-                                    fit: BoxFit.fill,
-                                  ),
-                                ),
-                              ),
-                               Positioned(bottom: 0,
-                                left: 60,
-                                child: Align(alignment: Alignment.center, child: Text(gagaris.length>0?'${gagaris[0]["name"]}' : "Loading"))),
-                            ],
-                          ),
-                          SizedBox(
-                            height: 50,
-                            width: MediaQuery.of(context).size.height * 0.15,
-                            child:   Stack(
-                              children: [
-                               
-                                Row(
-                                  mainAxisAlignment: MainAxisAlignment.center,
-                                  children: [
-                                    SizedBox(
-                                      height: 15,
-                                      child: Image(
-                                        image: AssetImage('images/star.png'),
-                                        fit: BoxFit.fill,
-                                      ),
-                                    ),
-                                    Text(gagaris.length>0?'${gagaris[0]["rate"]}' : "Loading")
-                                  ],
-                                )
-                              ],
-                            ),
-                          )
-                        ],
-                      ),
-                    ),
-                    Container(
-                      padding: EdgeInsets.only(bottom: 10),
-                      child: Column(
-                        mainAxisAlignment: MainAxisAlignment.spaceAround,
-                        children: [
-                          Container(
-                            padding: EdgeInsets.all(10),
-                            width: MediaQuery.of(context).size.width * 0.4,
-                            height: MediaQuery.of(context).size.height * 0.15,
-                            child: Image(
-                              image: AssetImage('images/parttime/gagari.jpg'),
-                              fit: BoxFit.fill,
-                            ),
-                          ),
-                          Container(
-                              height: 30,
-                              color: Color.fromARGB(255, 243, 240, 240),
-                              child: TextButton(
-                                  onPressed: () {
-                                    Navigator.of(context)
-                                        .push(MaterialPageRoute(
-                                            builder: (context) => PGagari(
-                                                  user: widget.user,
-                                                )));
-                                  },
-                                  child: Text(
-                                    'APPLY NOW',
-                                    style: TextStyle(color: Colors.black),
-                                  ))),
-                        ],
-                      ),
-                    ),
-                    Container(
-                      padding: EdgeInsets.only(bottom: 10),
-                      child: Column(
-                        mainAxisAlignment: MainAxisAlignment.spaceAround,
-                        children: [
-                          Container(
-                            padding: EdgeInsets.all(10),
-                            width: MediaQuery.of(context).size.width * 0.4,
-                            height: MediaQuery.of(context).size.height * 0.15,
-                            child: Image(
-                              image: AssetImage('images/parttime/gagari.jpg'),
-                              fit: BoxFit.fill,
-                            ),
-                          ),
-                          Container(
-                              height: 30,
-                              color: Color.fromARGB(255, 243, 240, 240),
-                              child: TextButton(
-                                  onPressed: () {
-                                    Navigator.of(context)
-                                        .push(MaterialPageRoute(
-                                            builder: (context) => PFirstAid(
-                                                  user: widget.user,
-                                                )));
-                                  },
-                                  child: Text(
-                                    'APPLY NOW',
-                                    style: TextStyle(color: Colors.black),
-                                  ))),
-                        ],
-                      ),
-                    ),
-                    Container(
-                      padding: EdgeInsets.only(bottom: 10),
-                      child: Column(
-                        mainAxisAlignment: MainAxisAlignment.spaceAround,
-                        children: [
-                          Container(
-                            padding: EdgeInsets.all(10),
-                            width: MediaQuery.of(context).size.width * 0.4,
-                            height: MediaQuery.of(context).size.height * 0.15,
-                            child: Image(
-                              image: AssetImage('images/parttime/gagari.jpg'),
-                              fit: BoxFit.fill,
-                            ),
-                          ),
-                          Container(
-                              height: 30,
-                              color: Color.fromARGB(255, 243, 240, 240),
-                              child: TextButton(
-                                  onPressed: () {},
-                                  child: Text(
-                                    'APPLY NOW',
-                                    style: TextStyle(color: Colors.black),
-                                  ))),
-                        ],
-                      ),
-                    ),
-                    Container(
-                      padding: EdgeInsets.only(bottom: 10),
-                      child: Column(
-                        mainAxisAlignment: MainAxisAlignment.spaceAround,
-                        children: [
-                          Container(
-                            padding: EdgeInsets.all(10),
-                            width: MediaQuery.of(context).size.width * 0.4,
-                            height: MediaQuery.of(context).size.height * 0.15,
-                            child: Image(
-                              image: AssetImage('images/parttime/gagari.jpg'),
-                              fit: BoxFit.fill,
-                            ),
-                          ),
-                          Container(
-                              height: 30,
-                              color: Color.fromARGB(255, 243, 240, 240),
-                              child: TextButton(
-                                  onPressed: () {},
-                                  child: Text(
-                                    'APPLY NOW',
-                                    style: TextStyle(color: Colors.black),
-                                  ))),
-                        ],
-                      ),
-                    ),
-                    Container(
-                      padding: EdgeInsets.only(bottom: 10),
-                      child: Column(
-                        mainAxisAlignment: MainAxisAlignment.spaceAround,
-                        children: [
-                          Container(
-                            padding: EdgeInsets.all(10),
-                            width: MediaQuery.of(context).size.width * 0.4,
-                            height: MediaQuery.of(context).size.height * 0.15,
-                            child: Image(
-                              image: AssetImage('images/parttime/gagari.jpg'),
-                              fit: BoxFit.cover,
-                            ),
-                          ),
-                          Container(
-                              height: 30,
-                              color: Color.fromARGB(255, 243, 240, 240),
-                              child: TextButton(
-                                  onPressed: () {},
-                                  child: Text(
-                                    'APPLY NOW',
-                                    style: TextStyle(color: Colors.black),
-                                  ))),
-                        ],
-                      ),
-                    ),
-                    PartTimeUtil(),
-                    PartTimeUtil(),
-                  ],
+                   
                 ),
               ),
             )
+            
           ],
         ),
         bottomNavigationBar: NavigationBar(
@@ -422,3 +237,69 @@ class _GagariState extends State<Gagari> {
     }
   }
 }
+/*
+
+
+Container(
+                      padding: EdgeInsets.only(bottom: 10),
+                      child: Column(
+                        mainAxisAlignment: MainAxisAlignment.spaceAround,
+                        children: [
+                          Stack(
+                            children: [
+                              GestureDetector(
+                                onTap: () {
+                                  var name =  gagaris.length>0?'${gagaris[0]["name"]}' : "";
+                                  var rate = (gagaris.length>0?'${gagaris[0]["rate"]}' : "");
+                                  var gagarix = GagariUtil(name, double.parse(rate));
+                                  print(gagarix);
+                                  Navigator.of(context)
+                                        .push(MaterialPageRoute(
+                                            builder: (context) => GagariDetail(
+                                                  gagari: gagarix,
+                                                )));
+                                },
+                                child: Container(
+                                  padding: EdgeInsets.all(10),
+                                  width: MediaQuery.of(context).size.width * 0.4,
+                                  height: MediaQuery.of(context).size.height * 0.15,
+                                  //color: Color.fromARGB(255, 243, 240, 240),
+                                  child: Image(
+                                    image: AssetImage('images/parttime/gagari.jpg'),
+                                    fit: BoxFit.fill,
+                                  ),
+                                ),
+                              ),
+                               Positioned(bottom: 0,
+                                left: 60,
+                                child: Align(alignment: Alignment.center, child: Text(gagaris.length>0?'${gagaris[0]["name"]}' : "Loading"))),
+                            ],
+                          ),
+                          SizedBox(
+                            height: 50,
+                            width: MediaQuery.of(context).size.height * 0.15,
+                            child:   Stack(
+                              children: [
+                               
+                                Row(
+                                  mainAxisAlignment: MainAxisAlignment.center,
+                                  children: [
+                                    SizedBox(
+                                      height: 15,
+                                      child: Image(
+                                        image: AssetImage('images/star.png'),
+                                        fit: BoxFit.fill,
+                                      ),
+                                    ),
+                                    Text(gagaris.length>0?'${gagaris[0]["rate"]}' : "Loading")
+                                  ],
+                                )
+                              ],
+                            ),
+                          )
+                        ],
+                      ),
+                    ),
+
+
+ */
