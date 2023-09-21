@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:hulubebete/pages/firstaid/chemical.dart';
 import 'package:hulubebete/pages/firstaid/electric.dart';
 import 'package:hulubebete/pages/firstaid/heart.dart';
+import 'package:hulubebete/pages/parttime/getdoctors.dart';
 import 'package:hulubebete/pages/professionals/professional.dart';
 import 'package:path_provider/path_provider.dart';
 import 'package:share/share.dart';
@@ -66,7 +67,7 @@ class _FirstAidState extends State<FirstAid> {
                       ElevatedButton.styleFrom(backgroundColor: Colors.green[200]),
                   onPressed: () {
                      Navigator.of(context).push(
-                          MaterialPageRoute(builder: (context) => Professionals()));
+                          MaterialPageRoute(builder: (context) => Professional()));
                   },
                   child: Text(
                     'Get professionals',

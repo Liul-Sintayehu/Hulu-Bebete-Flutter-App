@@ -34,7 +34,7 @@ class _GagariDetailState extends State<GagariDetail> {
       final data = await post(Uri.parse(url), body: {
         "email": widget.user.emailu,
         "name": widget.user.nameu,
-        "amount": jsonEncode(300)
+        "amount": jsonEncode(200)
       });
       // final data2 = await post(Uri.parse(url2), body: {
       //   "email": widget.user.emailu,
@@ -54,22 +54,23 @@ class _GagariDetailState extends State<GagariDetail> {
         "amount": jsonEncode(200)
       });
   print(data2.body);
+  
     } catch (e) {
       print(e);
     }
   }
-   void rateGagari() async {
+  void rateGagari() async {
     try {
       final url = 'https://fproject1.onrender.com/rategagari';
       
-
+      print(rating);
       final data = await post(Uri.parse(url), body: {
         "name": widget.gagari.name,
-        "rate": jsonEncode(rating)
+        "rate": rating.toStringAsFixed(1)
       });
+      print(jsonEncode(rating).runtimeType);
 
-      print(data.body);
-     
+       
     } catch (e) {
       print(e);
     }
@@ -114,7 +115,16 @@ class _GagariDetailState extends State<GagariDetail> {
                 child: Column(
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
-                    Text('${widget.user.balanceu}'),
+                    Padding(
+                      padding: const EdgeInsets.all(18.0),
+                      child: Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        children: [
+                          Text('balance : ${widget.user.balanceu}'),
+                          Text('Price : 200')
+                        ],
+                      ),
+                    ),
                     Image(
                       image: AssetImage('images/parttime/gagari.jpg'),
                       fit: BoxFit.fill,
@@ -133,6 +143,7 @@ class _GagariDetailState extends State<GagariDetail> {
                                   AssetImage('images/star.png')),
                               onRatingUpdate: (rate) => setState(() {
                                     this.rating = rate;
+                                     
                                   })),
                           Padding(
                             padding: const EdgeInsets.symmetric(
@@ -140,7 +151,8 @@ class _GagariDetailState extends State<GagariDetail> {
                             child: ElevatedButton(
                               onPressed: ()  {
                                rateGagari();
-                               showSuc('gagari rated');
+                               showSuc('gagari rated','succusfull');
+                               
                                 
                               },
                               style: ElevatedButton.styleFrom(
@@ -162,7 +174,7 @@ class _GagariDetailState extends State<GagariDetail> {
                         ],
                       ),
                     ),
-                    Text('${widget.gagari.rate}'),
+                    Text('${widget.gagari.rate.toStringAsFixed(1)}'),
                   ],
                 ),
               ),
@@ -171,9 +183,13 @@ class _GagariDetailState extends State<GagariDetail> {
               padding: const EdgeInsets.symmetric(horizontal: 24, vertical: 8),
               child: ElevatedButton(
                 onPressed: () {
+                  if(widget.user.balanceu < 200){
+                    showSuc("insufficient balance",'unsuccsusfull');
+                  }else{
                   sendData();
-                  showSuc("Request sent");
+                  showSuc("Request sent",'succsusfull');
                   update();
+                  }
                   //print('sending');
                 },
                 style: ElevatedButton.styleFrom(
@@ -290,13 +306,13 @@ class _GagariDetailState extends State<GagariDetail> {
     }
   }
 
-  void showSuc(text) => showDialog(
+  void showSuc(text,text2) => showDialog(
         context: context,
         builder: (context) => AlertDialog(
           title: Center(child: Text(text)),
           content: Column(
             mainAxisSize: MainAxisSize.min,
-            children: [Text('successfull!!')],
+            children: [Text('${text2}!!')],
           ),
           actions: [
             TextButton(

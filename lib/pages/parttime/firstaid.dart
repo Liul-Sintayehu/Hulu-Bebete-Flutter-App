@@ -23,7 +23,7 @@ class _PFirstAidState extends State<PFirstAid> {
   final phone = TextEditingController();
   final subcity = TextEditingController();
   final paypm = TextEditingController();
-  final experiance = TextEditingController();
+  final proffesion = TextEditingController();
 
    void sendData() async {
     try {
@@ -36,6 +36,7 @@ class _PFirstAidState extends State<PFirstAid> {
         "name": name.text,
         "phone": phone.text,
         "subcity": subcity.text,
+        "proffesion": proffesion.text
       };
        
       var resp = await post(Uri.parse(url), body: data);
@@ -161,7 +162,7 @@ class _PFirstAidState extends State<PFirstAid> {
                           child: SizedBox(
                             height: 40,
                             child: TextField(
-                              controller: paypm,
+                              controller: subcity,
                               decoration: InputDecoration(
                                   contentPadding:
                                       EdgeInsets.fromLTRB(50, 0, 0, 0),
@@ -179,8 +180,8 @@ class _PFirstAidState extends State<PFirstAid> {
                             ),
                           ),
                         ),
-                        MyTextField(label: 'Enter payment/minute',txtcont:paypm ),
-                        MyTextField(label: 'Enter experiance',txtcont:experiance ),
+                        
+                        MyTextField(label: 'Enter proffesion',txtcont:proffesion ),
                         SizedBox(height: 60),
                         Padding(
                           padding: const EdgeInsets.symmetric(
@@ -188,6 +189,7 @@ class _PFirstAidState extends State<PFirstAid> {
                           child: ElevatedButton(
                             onPressed: () {
                              sendData();
+                             showSuc();
                               //print('sending');
                             },
                             style: ElevatedButton.styleFrom(
@@ -271,7 +273,30 @@ class _PFirstAidState extends State<PFirstAid> {
       ),
     );
   }
-
+void showSuc() => showDialog(
+        context: context,
+        builder: (context) => AlertDialog(
+          title: Center(child: Text('Registration complete')),
+          content: Column(
+            mainAxisSize: MainAxisSize.min,
+            children: [
+               Text('successfull!!')
+            ],
+          ),
+          actions: [
+            TextButton(
+                onPressed: () {
+                  
+                  Navigator.of(context).pop();
+                  FocusScope.of(context).unfocus();
+                  new TextEditingController().clear();
+                  
+                  
+                },
+                child: Text('Ok'))
+          ],
+        ),
+      );
    
    
 }

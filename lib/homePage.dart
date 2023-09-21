@@ -38,21 +38,21 @@ class _HomePageState extends State<HomePage> {
   final PageController _pageController = PageController(initialPage: 0);
   Timer? _timer;
   int _currentPage = 0;
-  int notif = 0;
+  int notif = 1;
 
   @override
   void initState() {
     super.initState();
     _startAutoScroll();
-    _refreshPage();
+   // _refreshPage();
   }
-  Future<void> _refreshPage() async {
-    // Perform any necessary operations here
-    setState(() {
-      notif = 3; // Update the variable here
-    });
+  // Future<void> _refreshPage() async {
+  //   // Perform any necessary operations here
+  //   setState(() {
+  //     notif = 3; // Update the variable here
+  //   });
      
-  }
+  // }
 
   @override
   void dispose() {
@@ -136,7 +136,11 @@ class _HomePageState extends State<HomePage> {
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
               IconButton(
-                onPressed: () {},
+                onPressed: () {
+                  showSuc(widget.user.notification);
+                  print('notified');
+
+                },
                 icon: Stack(
                   children: [
                     ImageIcon(
@@ -145,9 +149,9 @@ class _HomePageState extends State<HomePage> {
                         AssetImage('images/notification.png')),
                     Positioned(
                         top: -3,
-                        right: -2,
+                        right: -1,
 
-                        child: Container(
+                        child:widget.user.notification.length>1? Container(
                             padding: EdgeInsets.all(2),
                             decoration: BoxDecoration(
                               shape: BoxShape.circle,
@@ -156,7 +160,7 @@ class _HomePageState extends State<HomePage> {
                             child: Text(
                               '$notif',
                               style: TextStyle(color: Colors.white),
-                            )))
+                            )):Text(''))
                   ],
                 ),
               ),
@@ -169,7 +173,7 @@ class _HomePageState extends State<HomePage> {
                   // Handle button click actions here
                   if (value == 'button1') {
                     // Perform action for button1
-                    _refreshPage();
+                    //_refreshPage();
                   } else if (value == 'button2') {
                     Navigator.of(context).push(MaterialPageRoute(
                     builder: (context) => Feedbacks(
@@ -177,6 +181,11 @@ class _HomePageState extends State<HomePage> {
                         )));
                   } else if (value == 'button3') {
                     // Perform action for button3
+                    // final prefs = await SharedPreferences.getInstance();
+                    // prefs.setBool('showHome', false);
+                    Navigator.of(context).pushReplacement(MaterialPageRoute(
+                        builder: ((context) => Login())));
+                  }else if(value == 'button4'){
                     final prefs = await SharedPreferences.getInstance();
                     prefs.setBool('showHome', false);
                     Navigator.of(context).pushReplacement(MaterialPageRoute(
@@ -195,6 +204,10 @@ class _HomePageState extends State<HomePage> {
                   PopupMenuItem(
                     value: 'button3',
                     child: Text('Log out'),
+                  ),
+                  PopupMenuItem(
+                    value: 'button4',
+                    child: Text('clear app'),
                   ),
                 ],
               )
@@ -361,11 +374,13 @@ class _HomePageState extends State<HomePage> {
                       AssetImage('images/home (1).png')))),
           IconButton(
               onPressed: () async {
-                String appDir =
-                    await getApplicationDocumentsDirectory().then((value) {
-                  return '${value.path}/app-release.apk';
-                });
-                Share.shareFiles([appDir], text: 'enjoy the app');
+                //String appDir =
+                //     await getApplicationDocumentsDirectory().then((value) {
+                //   return '${value.path}/app-release.apk';
+                // });
+                // Share.shareFiles([appDir], text: 'enjoy the app');
+                Share.share('Hello, World!');
+
               },
               icon: SizedBox(child: Icon(size: 30, Icons.share))),
           IconButton(
@@ -379,8 +394,8 @@ class _HomePageState extends State<HomePage> {
                       AssetImage('images/star.png')))),
           IconButton(
               onPressed: () {
-                //  Navigator.of(context)
-                //     .push(MaterialPageRoute(builder: (context) => Info()));
+                 Navigator.of(context)
+                    .push(MaterialPageRoute(builder: (context) => Info(user: widget.user,)));
               },
               icon: SizedBox(
                   child: ImageIcon(
@@ -437,6 +452,30 @@ class _HomePageState extends State<HomePage> {
                   rating = 0;
                 },
                 child: Text('Rate'))
+          ],
+        ),
+      );
+      void showSuc(not) => showDialog(
+        context: context,
+        builder: (context) => AlertDialog(
+          title: Center(child: Text('New message')),
+          content: Column(
+            mainAxisSize: MainAxisSize.min,
+            children: [
+               Text(not)
+            ],
+          ),
+          actions: [
+            TextButton(
+                onPressed: () {
+                  
+                  Navigator.of(context).pop();
+                  FocusScope.of(context).unfocus();
+                  new TextEditingController().clear();
+                  
+                  
+                },
+                child: Text('Ok'))
           ],
         ),
       );

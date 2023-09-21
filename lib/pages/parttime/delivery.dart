@@ -34,13 +34,12 @@ class _PDeliveryState extends State<PDelivery> {
       final url = 'https://fproject1.onrender.com/createmelktegna';
       var data = {
         "name": name.text,
-        "phone": double.parse(phone.text),
+        "phone": phone.text,
         "subcity" : subcity.text,
         "payment" : paypkm.text,
         "method" : method.text,
-        "experiance": experiance.text
       }; 
-      var resp = await post(Uri.parse(url), body: jsonEncode(data));
+      var resp = await post(Uri.parse(url), body: data);
      print(resp.body);
     } catch (e) {
       print(e);

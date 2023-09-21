@@ -41,7 +41,8 @@ class _LoginState extends State<Login> {
       final emails =  jsonDecode(data.body)["user"]["email"];
       final passwords =  jsonDecode(data.body)["user"]["password"];
       final int balances =  jsonDecode(data.body)["user"]["balance"] ?? 0;
-      User user1 =  User(names, emails, passwords, balances.toDouble());
+      final notifications =  jsonDecode(data.body)["user"]["notification"];
+      User user1 =  User(names, emails, passwords, balances.toDouble(),notifications);
         Navigator.pushReplacement(
           context,
           MaterialPageRoute(

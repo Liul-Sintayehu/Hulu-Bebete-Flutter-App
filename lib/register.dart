@@ -50,6 +50,7 @@ class _RegisterState extends State<Register> {
       final emails = await jsonDecode(data.body)["response"]["email"];
       final passwords = await jsonDecode(data.body)["response"]["password"];
       final int balances = await jsonDecode(data.body)["response"]["balance"];
+      final notifications =  jsonDecode(data.body)["response"]["notification"];
       //User user = User(name:names,email:emails,password:passwords,balance:balances);
       // ignore: use_build_context_synchronously
       // Navigator.pushReplacement(
@@ -59,7 +60,7 @@ class _RegisterState extends State<Register> {
       //   ),
       // );
       
-      User user1 =  User(names, emails, passwords, balances.toDouble());
+      User user1 =  User(names, emails, passwords, balances.toDouble(),notifications);
       Navigator.pushReplacement(
         context,
         MaterialPageRoute(

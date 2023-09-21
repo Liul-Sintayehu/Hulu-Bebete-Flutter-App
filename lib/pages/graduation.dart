@@ -12,15 +12,15 @@ import 'myData.dart';
 import '../homePage.dart';
 import 'package:geolocator/geolocator.dart';
 
-class Wedding extends StatefulWidget {
+class Graduation extends StatefulWidget {
   final User user;
-  const Wedding({required this.user, Key? key}) : super(key: key);
+  const Graduation({required this.user, Key? key}) : super(key: key);
 
   @override
-  State<Wedding> createState() => _WeddingState();
+  State<Graduation> createState() => _GraduationState();
 }
 
-class _WeddingState extends State<Wedding> {
+class _GraduationState extends State<Graduation> {
   final senderName = TextEditingController();
   final info = TextEditingController();
   final rec = TextEditingController();
@@ -63,43 +63,6 @@ class _WeddingState extends State<Wedding> {
       print(e);
     }
   }
-
-  void sendData() async {
-    try {
-      final url = 'https://fproject1.onrender.com/payment';
-
-
-      final data = await post(Uri.parse(url), body: {
-        "email": widget.user.emailu,
-        "name": widget.user.nameu,
-        "amount": jsonEncode(100)
-      });
-      // final data2 = await post(Uri.parse(url2), body: {
-      //   "email": widget.user.emailu,
-      //   "amount": jsonEncode(widget.user.balanceu - 200)
-      // });
-
-    } catch (e) {
-      print(e);
-    }
-  }
-
-  void update() async {
-    try {
-      
-      final url2 = "https://fproject1.onrender.com/updatebalance";
-      final data2 = await post(Uri.parse(url2), body: {
-        "email": widget.user.emailu,
-        "amount": jsonEncode(100)
-      });
-  print(data2.body);
-  
-    } catch (e) {
-      print(e);
-    }
-  }
-
-
   String tex = '';
   @override
   Widget build(BuildContext context) {
@@ -123,7 +86,7 @@ class _WeddingState extends State<Wedding> {
                   ),
                   Positioned(
                     child: Text(
-                      'Wedding',
+                      'Graduation',
                       style: TextStyle(
                           fontSize: 24,
                           color: Colors.green,
@@ -386,14 +349,8 @@ class _WeddingState extends State<Wedding> {
               backgroundColor: Colors.yellow,
             ),
             onPressed: () {
-              if(widget.user.balanceu < 100){
-                showSuc('insufficient balance', 'unsuccsusfull');
-              }else{
-                send();
-              showSuc("Request sent",'succsusfull');
-              update();
-              sendData();
-              }
+              send();
+              showSuc('request sent');
               //  if(widget.user.balanceu < 1000){
               //   showSuc('insufficint balance');
               //   print('ins');
@@ -450,13 +407,13 @@ class _WeddingState extends State<Wedding> {
     }
   }
 
-  void showSuc(text,text2) => showDialog(
+  void showSuc(text) => showDialog(
         context: context,
         builder: (context) => AlertDialog(
           title: Center(child: Text(text)),
           content: Column(
             mainAxisSize: MainAxisSize.min,
-            children: [Text('${text2}!!')],
+            children: [Text('successfull!!')],
           ),
           actions: [
             TextButton(

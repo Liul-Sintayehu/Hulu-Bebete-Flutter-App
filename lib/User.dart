@@ -14,6 +14,7 @@ class User{
     final String emailu;
     final String passwordu;
     final double balanceu;
+    final String notification;
 
-  User( this.nameu, this.emailu, this.passwordu, this.balanceu);
+  User( this.nameu, this.emailu, this.passwordu, this.balanceu, this.notification);
 }

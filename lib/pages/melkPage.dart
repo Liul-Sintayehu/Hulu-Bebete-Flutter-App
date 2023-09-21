@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/material.dart';
+import 'package:hulubebete/pages/birthday.dart';
+import 'package:hulubebete/pages/graduation.dart';
 import 'package:hulubebete/pages/wedding.dart';
 import 'package:path_provider/path_provider.dart';
 import 'package:share/share.dart';
@@ -102,7 +104,10 @@ class _MelktPageState extends State<MelktPage> {
                             trailing: ElevatedButton(
                                 style: ElevatedButton.styleFrom(
                                     backgroundColor: Colors.white),
-                                onPressed: () {},
+                                onPressed: () {
+                                  Navigator.of(context).push(
+                          MaterialPageRoute(builder: (context) => Graduation(user: widget.user,)));
+                                },
                                 child: Text('Graduation',
                                     style: TextStyle(
                                         fontSize: 18, color: Colors.black))),
@@ -127,7 +132,10 @@ class _MelktPageState extends State<MelktPage> {
                             trailing: ElevatedButton(
                               style: ElevatedButton.styleFrom(
                                   backgroundColor: Colors.white),
-                              onPressed: () {},
+                              onPressed: () {
+                                Navigator.of(context).push(
+                          MaterialPageRoute(builder: (context) => Birthday(user: widget.user,)));
+                              },
                               child: Text(
                                 'Birthday',
                                 style: TextStyle(
